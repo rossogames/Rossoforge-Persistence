@@ -52,6 +52,12 @@ namespace Rossoforge.UserData.Service
                 return;
             }
 
+            if(string.IsNullOrEmpty(_serviceData.EncoderKey))
+            {
+                CurrentSave = JsonFiles.Deserialize<T>(json);
+                return;
+            }
+
             if (!Base64Encoder.TryDecode(json, out string decodedJson))
             {
                 RossoLogger.Error($"Failed to decode save file: {_filePath}");
