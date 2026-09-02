@@ -24,7 +24,9 @@ namespace Rossoforge.UserData.Service
         public void Initialize()
         {
             _filePath = Path.Combine(Application.persistentDataPath, _serviceData.FileName);
-            Base64Encoder.SetKey(_serviceData.EncoderKey);
+
+            if (!string.IsNullOrEmpty(_serviceData.EncoderKey))
+                Base64Encoder.SetKey(_serviceData.EncoderKey);
 
             Load();
         }
