@@ -32,7 +32,7 @@ namespace Rossoforge.UserData.Service
         public void Save()
         {
             var json = JsonFiles.Serialize(CurrentSave);
-            var encodedJson = Base64Encoder.Encode(json);
+            var encodedJson = string.IsNullOrEmpty(_serviceData.EncoderKey) ? json : Base64Encoder.Encode(json);
             TextFiles.Save(_filePath, encodedJson);
         }
 
