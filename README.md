@@ -2,8 +2,8 @@
 
 <table>
   <tr>
-    <td><img src="https://github.com/rossogames/Rossoforge-UserData/blob/main/logo.png?raw=true" alt="Rossoforge" width="64"/></td>
-    <td><h2>Rossoforge - User Data</h2></td>
+    <td><img src="https://github.com/rossogames/Rossoforge-Persistence/blob/main/logo.png?raw=true" alt="Rossoforge" width="64"/></td>
+    <td><h2>Rossoforge - Persistence</h2></td>
   </tr>
 </table>
 

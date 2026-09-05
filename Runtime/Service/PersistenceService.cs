@@ -1,4 +1,3 @@
-using Rossoforge.Core.UserData;
 using Rossoforge.Services.Service;
 using Rossoforge.Utils.Encoding;
 using Rossoforge.Utils.IO;
@@ -6,20 +5,20 @@ using Rossoforge.Utils.Logger;
 using System.IO;
 using UnityEngine;
 
-namespace Rossoforge.UserData.Service
+namespace Rossoforge.Persistence.Service
 {
-    public class UserDataService<T> : IUserDataService<T>, IInitializable
-        where T : IGameSave, new()
+    public class PersistenceService<T> : IPersistenceService<T>, IInitializable
+        where T : IPersistentData, new()
     {
-        private UserDataDataService _dataService;
+        private PersistenceDataService _dataService;
         private string _filePath;
 
-        public T CurrentSave { get; private set; }
+        public T Data { get; private set; }
 
-        public UserDataService(UserDataDataService dataService)
+        public PersistenceService(PersistenceDataService dataService)
         {
             _dataService = dataService;
-            CurrentSave = new T();
+            Data = new T();
         }
 
         public void Initialize()
@@ -34,7 +33,7 @@ namespace Rossoforge.UserData.Service
 
         public void Save()
         {
-            var json = JsonFiles.Serialize(CurrentSave);
+            var json = JsonFiles.Serialize(Data);
             var encodedJson = string.IsNullOrEmpty(_dataService.EncoderKey) ? json : Base64Encoder.Encode(json);
             TextFiles.Save(_filePath, encodedJson);
         }
@@ -55,7 +54,7 @@ namespace Rossoforge.UserData.Service
 
             if (string.IsNullOrEmpty(_dataService.EncoderKey))
             {
-                CurrentSave = JsonFiles.Deserialize<T>(json);
+                Data = JsonFiles.Deserialize<T>(json);
                 return;
             }
 
@@ -65,7 +64,7 @@ namespace Rossoforge.UserData.Service
                 return;
             }
 
-            CurrentSave = JsonFiles.Deserialize<T>(decodedJson);
+            Data = JsonFiles.Deserialize<T>(decodedJson);
         }
 
         public void Delete()
@@ -73,7 +72,7 @@ namespace Rossoforge.UserData.Service
             if (Files.ExistsFile(_filePath))
                 Files.DeleteFile(_filePath);
 
-            CurrentSave = new T();
+            Data = new T();
         }
     }
 }
