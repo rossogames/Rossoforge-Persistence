@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Rossoforge.Persistence.Service
 {
-    [CreateAssetMenu(fileName = nameof(PersistenceDataService), menuName = "Rossoforge/Data Service/User Data")]
+    [CreateAssetMenu(fileName = nameof(PersistenceDataService), menuName = "Rossoforge/Data Service/Persistence")]
     public class PersistenceDataService : ScriptableObject
     {
         [field: SerializeField]
