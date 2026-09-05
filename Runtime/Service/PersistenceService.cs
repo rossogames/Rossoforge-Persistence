@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Rossoforge.Persistence.Service
 {
-    public class PersistenceService<T> : IPersistenceService<T>, IInitializable
+    public abstract class PersistenceService<T> : IPersistenceService<T>, IInitializable
         where T : IPersistentData, new()
     {
         private PersistenceDataService _dataService;
@@ -21,7 +21,7 @@ namespace Rossoforge.Persistence.Service
             Data = new T();
         }
 
-        public void Initialize()
+        public virtual void Initialize()
         {
             _filePath = Path.Combine(Application.persistentDataPath, _dataService.FileName);
 
@@ -31,14 +31,14 @@ namespace Rossoforge.Persistence.Service
             Load();
         }
 
-        public void Save()
+        protected void Save()
         {
             var json = JsonFiles.Serialize(Data);
             var encodedJson = string.IsNullOrEmpty(_dataService.EncoderKey) ? json : Base64Encoder.Encode(json);
             TextFiles.Save(_filePath, encodedJson);
         }
 
-        public void Load()
+        protected void Load()
         {
             if (!Files.ExistsFile(_filePath))
             {
@@ -67,7 +67,7 @@ namespace Rossoforge.Persistence.Service
             Data = JsonFiles.Deserialize<T>(decodedJson);
         }
 
-        public void Delete()
+        protected void Delete()
         {
             if (Files.ExistsFile(_filePath))
                 Files.DeleteFile(_filePath);
