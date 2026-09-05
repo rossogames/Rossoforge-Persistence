@@ -1,7 +1,7 @@
 {
-  "name": "com.rossogames.rossoforge-user-data",
+  "name": "com.rossogames.rossoforge-persistence",
   "version": "1.5.0",
-  "displayName": "Rossoforge-UserData",
+  "displayName": "Rossoforge-Persistence",
   "unity": "2025.0",
   "author": {
     "name": "Agustin Rosso",
@@ -13,5 +13,5 @@
     "save",
     "user data"
   ],
-  "description": "A simple, project-agnostic service for storing player progression in a single local file, keeping the save in memory for runtime modifications and controlled persistence."
+  "description": "A simple, project-agnostic service for managing persistent local data in a single file, keeping state in memory for runtime modifications and controlled disk persistence."
 }

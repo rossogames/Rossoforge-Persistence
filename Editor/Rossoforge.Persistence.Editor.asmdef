@@ -1,9 +1,9 @@
 {
-    "name": "Rossoforge.UserData.Editor",
-    "rootNamespace": "Rossoforge.UserData.Editor",
+    "name": "Rossoforge.Persistence.Editor",
+    "rootNamespace": "Rossoforge.Persistence.Editor",
     "references": [
-        "GUID:eceda2bb70a6cdf4290aea64360d5cd7",
-        "GUID:7533d169e9f01454ba898c5bce48fa7a"
+        "Rossoforge.Utils",
+        "Rossoforge.Persistence"
     ],
     "includePlatforms": [
         "Editor"

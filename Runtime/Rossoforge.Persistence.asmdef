@@ -1,10 +1,10 @@
 {
-    "name": "Rossoforge.UserData",
-    "rootNamespace": "Rossoforge.UserData",
+    "name": "Rossoforge.Persistence",
+    "rootNamespace": "Rossoforge.Persistence",
     "references": [
-        "GUID:b3cbb51ff65434d449548fe48c6c6d5e",
-        "GUID:ae967750e1770b642a3d54aa659bef76",
-        "GUID:7533d169e9f01454ba898c5bce48fa7a"
+        "Rossoforge.Core",
+        "Rossoforge.Services",
+        "Rossoforge.Utils"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
