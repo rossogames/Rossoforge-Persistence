@@ -4,9 +4,9 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace Rossoforge.UserData.Editor
+namespace Rossoforge.Persistence.Editor
 {
-    public class UserDataEditor
+    public class PersistenceEditor
     {
         [MenuItem("Rossoforge/Persistent Data/Delete Folder")]
         public static void Delete()

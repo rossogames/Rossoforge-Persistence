@@ -1,9 +1,8 @@
 using UnityEngine;
 
-namespace Rossoforge.UserData.Service
+namespace Rossoforge.Persistence.Service
 {
-    [CreateAssetMenu(fileName = nameof(UserDataServiceData), menuName = "Rossoforge/UserData/Service Data")]
-    public class UserDataServiceData : ScriptableObject
+    public abstract class PersistenceDataService : ScriptableObject
     {
         [field: SerializeField]
         public string FileName { get; private set; }
