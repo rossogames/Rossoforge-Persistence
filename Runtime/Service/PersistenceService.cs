@@ -1,8 +1,10 @@
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
 using Rossoforge.Services.Service;
 using Rossoforge.Utils.Encoding;
 using Rossoforge.Utils.IO;
 using Rossoforge.Utils.Logger;
-using System.IO;
 using UnityEngine;
 
 namespace Rossoforge.Persistence.Service
@@ -31,40 +33,34 @@ namespace Rossoforge.Persistence.Service
             Load();
         }
 
-        protected void Save()
+        protected void Save(IList<JsonConverter> customConverters = null)
         {
-            var json = JsonFiles.Serialize(Data);
-            var encodedJson = string.IsNullOrEmpty(_dataService.EncoderKey) ? json : Base64Encoder.Encode(json);
-            TextFiles.Save(_filePath, encodedJson);
+            var json = JsonFiles.Serialize(Data, customConverters);
+            WriteToDisk(json);
         }
 
-        protected void Load()
+        protected void Save(JsonSerializerSettings customSettings)
         {
-            if (!Files.ExistsFile(_filePath))
-            {
-                return;
-            }
+            var json = JsonFiles.Serialize(Data, customSettings);
+            WriteToDisk(json);
+        }
 
-            var json = TextFiles.Load(_filePath);
-            if (string.IsNullOrEmpty(json))
-            {
-                RossoLogger.Error($"Save file is empty: {_filePath}");
+        protected void Load(IList<JsonConverter> customConverters = null)
+        {
+            var rawJson = GetFileContent();
+            if (string.IsNullOrWhiteSpace(rawJson))
                 return;
-            }
 
-            if (string.IsNullOrEmpty(_dataService.EncoderKey))
-            {
-                Data = JsonFiles.Deserialize<T>(json);
+            Data = JsonFiles.Deserialize<T>(rawJson, customConverters);
+        }
+
+        protected void Load(JsonSerializerSettings customSettings)
+        {
+            var rawJson = GetFileContent();
+            if (string.IsNullOrWhiteSpace(rawJson))
                 return;
-            }
 
-            if (!Base64Encoder.TryDecode(json, out string decodedJson))
-            {
-                RossoLogger.Error($"Failed to decode save file: {_filePath}");
-                return;
-            }
-
-            Data = JsonFiles.Deserialize<T>(decodedJson);
+            Data = JsonFiles.Deserialize<T>(rawJson, customSettings);
         }
 
         protected void Delete()
@@ -73,6 +69,41 @@ namespace Rossoforge.Persistence.Service
                 Files.DeleteFile(_filePath);
 
             Data = new T();
+        }
+
+        private void WriteToDisk(string json)
+        {
+            var encodedJson = string.IsNullOrEmpty(_dataService.EncoderKey) ? json : Base64Encoder.Encode(json);
+            TextFiles.Save(_filePath, encodedJson);
+        }
+
+        private string GetFileContent()
+        {
+            if (!Files.ExistsFile(_filePath))
+            {
+                return null;
+            }
+
+            var json = TextFiles.Load(_filePath);
+            if (string.IsNullOrEmpty(json))
+            {
+                RossoLogger.Error($"Save file is empty: {_filePath}");
+                return null;
+            }
+
+            string rawJson = json;
+
+            if (!string.IsNullOrEmpty(_dataService.EncoderKey))
+            {
+                if (!Base64Encoder.TryDecode(json, out string decodedJson))
+                {
+                    RossoLogger.Error($"Failed to decode save file: {_filePath}");
+                    return null;
+                }
+                rawJson = decodedJson;
+            }
+
+            return rawJson;
         }
     }
 }
